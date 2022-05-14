@@ -21,3 +21,6 @@
 go.work
 
 .idea
+
+# data file
+public/*
