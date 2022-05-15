@@ -1,13 +1,11 @@
 package repository
 
-import "fmt"
-
 type User struct {
 	Id            int64
-	UserName      string
-	PassWord      string
-	FollowCount   int64
-	FollowerCount int64
+	Username      string `gorm:"column:username"`
+	Password      string `gorm:"column:password"`
+	FollowCount   int64  `gorm:"column:follow_count"`
+	FollowerCount int64  `gorm:"column:follower_count"`
 }
 
 func (User) TableName() string {
@@ -16,9 +14,8 @@ func (User) TableName() string {
 
 func QueryUserById(id int64) (*User, error) {
 	var user User
-	err := db.Where("id = ?", id).Find(&user).Error
+	err := db.Where("id = ?", id).First(&user).Error
 	if err != nil {
-		fmt.Println("Error in repository::QueryUserById")
 		return nil, err
 	}
 	return &user, nil

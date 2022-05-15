@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/RaymondCode/simple-demo/repository"
@@ -10,9 +9,9 @@ import (
 type User struct {
 	Id            int64  `json:"id,omitempty"`
 	Name          string `json:"name,omitempty"`
-	FollowCount   int64  `json:"follow_count,omitempty"`
-	FollowerCount int64  `json:"follower_count,omitempty"`
-	IsFollow      bool   `json:"is_follow,omitempty"`
+	FollowCount   int64  `json:"follow_count"`
+	FollowerCount int64  `json:"follower_count"`
+	IsFollow      bool   `json:"is_follow"`
 }
 
 type Video struct {
@@ -32,13 +31,11 @@ func QueryFeed(latestTime int64, token string) ([]Video, error) {
 		tm := time.Unix(latestTime/1000, 0)
 		timeLayout := "2006-01-02 15:04:05" //firm
 		latestTimeStr := tm.Format(timeLayout)
-		fmt.Println(latestTimeStr)
 		rawVideos, err = repository.QueryVideosSince(latestTimeStr)
 	} else {
 		rawVideos, err = repository.QueryAllVideos()
 	}
 	if err != nil {
-		fmt.Println("Error in Service::query_feed")
 		return nil, err
 	}
 	var videos []Video
@@ -46,12 +43,11 @@ func QueryFeed(latestTime int64, token string) ([]Video, error) {
 		userId := video.UserId
 		rawAuthor, err := repository.QueryUserById(userId)
 		if err != nil {
-			fmt.Println("Error in Service::query_feed for loop")
 			return nil, err
 		}
 		author := User{
 			Id:            rawAuthor.Id,
-			Name:          rawAuthor.UserName,
+			Name:          rawAuthor.Username,
 			FollowCount:   rawAuthor.FollowCount,
 			FollowerCount: rawAuthor.FollowerCount,
 			IsFollow:      false,

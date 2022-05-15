@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -19,7 +18,6 @@ type FeedResponse struct {
 // Feed same demo video list for every request
 func Feed(c *gin.Context) {
 	var latestTime int64
-	fmt.Println(c.Query("latest_time"))
 	if c.Query("latest_time") != "" {
 		t, err := strconv.ParseInt(c.Query("latest_time"), 10, 64)
 		if err != nil {
@@ -41,10 +39,4 @@ func Feed(c *gin.Context) {
 		VideoList: videos,
 		NextTime:  time.Now().Unix(),
 	})
-
-	// c.JSON(http.StatusOK, FeedResponse{
-	// 	Response:  Response{StatusCode: 0},
-	// 	VideoList: DemoVideos,
-	// 	NextTime:  time.Now().Unix(),
-	// })
 }

@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -23,7 +22,6 @@ func QueryVideosSince(latestTimeStr string) ([]Video, error) {
 	var videos []Video
 	err := db.Where("publish_time < ?", latestTimeStr).Limit(30).Order("publish_time DESC").Find(&videos).Error
 	if err != nil {
-		fmt.Println("Error in repository::QueryVideosSince")
 		return nil, err
 	}
 	return videos, nil
@@ -33,7 +31,6 @@ func QueryAllVideos() ([]Video, error) {
 	var videos []Video
 	err := db.Limit(30).Order("publish_time DESC").Find(&videos).Error
 	if err != nil {
-		fmt.Println("Error in repository::QueryAllVideos")
 		return nil, err
 	}
 	return videos, nil
