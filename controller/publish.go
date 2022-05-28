@@ -2,6 +2,9 @@ package controller
 
 import (
 	"fmt"
+	"github.com/RaymondCode/simple-demo/model/response"
+	"github.com/RaymondCode/simple-demo/service"
+	"github.com/RaymondCode/simple-demo/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"path/filepath"
@@ -46,14 +49,18 @@ func Publish(c *gin.Context) {
 		StatusCode: 0,
 		StatusMsg:  finalName + " uploaded successfully",
 	})
+
+	//token := c.Query("token")
 }
 
-// PublishList all users have same publish video list
+// PublishList get published video list of the user
 func PublishList(c *gin.Context) {
-	c.JSON(http.StatusOK, VideoListResponse{
-		Response: Response{
-			StatusCode: 0,
-		},
-		VideoList: DemoVideos,
-	})
+	userId := utils.GetUserId(c)
+	videoList, err := service.GroupApp.PublishService.VideoPublishList(userId)
+
+	if err != nil {
+		response.FailWithMessage("投稿列表查询失败", c)
+	} else {
+		response.OkWithVideoList(videoList, "查询成功", c)
+	}
 }
