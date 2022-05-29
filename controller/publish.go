@@ -6,7 +6,6 @@ import (
 	"github.com/RaymondCode/simple-demo/service"
 	"github.com/RaymondCode/simple-demo/utils"
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"path/filepath"
 )
 
@@ -15,42 +14,33 @@ type VideoListResponse struct {
 	VideoList []Video `json:"video_list"`
 }
 
-// Publish check token then save upload file to public directory
+// Publish check token then save upload file to public directory or OSS
 func Publish(c *gin.Context) {
-	token := c.PostForm("token")
+	userId := utils.GetUserId(c)
+	title := c.PostForm("title")
 
-	if _, exist := usersLoginInfo[token]; !exist {
-		c.JSON(http.StatusOK, Response{StatusCode: 1, StatusMsg: "User doesn't exist"})
-		return
-	}
-
-	data, err := c.FormFile("data")
+	videoData, err := c.FormFile("data")
 	if err != nil {
-		c.JSON(http.StatusOK, Response{
-			StatusCode: 1,
-			StatusMsg:  err.Error(),
-		})
+		response.FailWithMessage("文件接收失败", c)
 		return
 	}
 
-	filename := filepath.Base(data.Filename)
-	user := usersLoginInfo[token]
-	finalName := fmt.Sprintf("%d_%s", user.Id, filename)
+	// todo: oss存储
+	filename := filepath.Base(videoData.Filename)
+	finalName := fmt.Sprintf("%d_%s", userId, filename)
 	saveFile := filepath.Join("./public/", finalName)
-	if err := c.SaveUploadedFile(data, saveFile); err != nil {
-		c.JSON(http.StatusOK, Response{
-			StatusCode: 1,
-			StatusMsg:  err.Error(),
-		})
+	if err := c.SaveUploadedFile(videoData, saveFile); err != nil {
+		response.FailWithMessage("视频上传失败", c)
 		return
 	}
 
-	c.JSON(http.StatusOK, Response{
-		StatusCode: 0,
-		StatusMsg:  finalName + " uploaded successfully",
-	})
+	if err := service.GroupApp.PublishService.VideoPublish(userId, title, videoData); err != nil {
+		response.FailWithMessage("视频信息存储失败", c)
+		return
+	}
 
-	//token := c.Query("token")
+	response.OkWithMessage("视频上传成功", c)
+
 }
 
 // PublishList get published video list of the user
@@ -61,6 +51,6 @@ func PublishList(c *gin.Context) {
 	if err != nil {
 		response.FailWithMessage("投稿列表查询失败", c)
 	} else {
-		response.OkWithVideoList(videoList, "查询成功", c)
+		response.OkWithVideoList(videoList, "投稿列表查询成功", c)
 	}
 }
