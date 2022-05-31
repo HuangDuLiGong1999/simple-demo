@@ -3,7 +3,7 @@ package model
 import "time"
 
 type Video struct {
-	Id            int64     `json:"id,omitempty" gorm:"primaryKey"`
+	Id            int64     `json:"id,omitempty" gorm:"primaryKey;autoIncrement:true"`
 	UserId        int64     `json:"user_id"`
 	Author        User      `json:"author" gorm:"foreignKey:user_id;references:id;"`
 	PlayUrl       string    `json:"play_url" json:"play_url,omitempty"`

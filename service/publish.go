@@ -1,15 +1,19 @@
 package service
 
 import (
+	"errors"
 	"github.com/RaymondCode/simple-demo/model"
 	"github.com/RaymondCode/simple-demo/repository"
+	"github.com/RaymondCode/simple-demo/utils"
+	"mime/multipart"
 	"sort"
+	"time"
 )
 
 type PublishService struct{}
 
 // VideoPublishList 获取用户上传的视频列表, 按上传时间倒序展示
-func (vs *PublishService) VideoPublishList(userId int64) ([]model.Video, error) {
+func (ps *PublishService) VideoPublishList(userId int64) ([]model.Video, error) {
 	//repository.GroupApp.VideoRepository.QueryByIds()
 	videoList, err := repository.GroupApp.VideoRepository.QueryVideosByUserId(userId)
 
@@ -18,4 +22,25 @@ func (vs *PublishService) VideoPublishList(userId int64) ([]model.Video, error) 
 	})
 
 	return videoList, err
+}
+
+func (ps *PublishService) VideoPublish(userId int64, title string, videoData *multipart.FileHeader) error {
+	oss_path, err := utils.UploadVideoToOss(userId, videoData)
+	if err != nil {
+		return errors.New("文件上传云端失败")
+	}
+
+	video := model.Video{
+		UserId:     userId,
+		PlayUrl:    oss_path,
+		CoverUrl:   "https://cdn.pixabay.com/photo/2016/03/27/18/10/bear-1283347_1280.jpg",
+		Title:      title,
+		CreateTime: time.Now(),
+	}
+
+	err = repository.GroupApp.VideoRepository.InsertVideo(video)
+	if err != nil {
+		return errors.New("投稿信息存储数据库失败")
+	}
+	return err
 }
