@@ -15,3 +15,9 @@ jwt:
   issuer: douyin
   signing-key: af4ffea3-cc5c-4c57-9fbe-86d3c3c370f9
   expires-time: 604800
+oss:
+  endpoint: b3NzLWNuLXNoYW5naGFpLmFsaXl1bmNzLmNvbQ==
+  accessKeyId: TFRBSTV0UldUcjYxNUFxYXV4R1BBcFQ3
+  accessKeySecret: TGl6U3EzemxyWE1TU3Y0MnJrczFuWVBsbGphekti
+  bucketName: bWluaS1kb3V5aW4tdmlkZW9z
+  host: aHR0cHM6Ly9taW5pLWRvdXlpbi12aWRlb3Mub3NzLWNuLXNoYW5naGFpLmFsaXl1bmNzLmNvbQ==

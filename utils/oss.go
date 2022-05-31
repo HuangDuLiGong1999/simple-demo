@@ -2,35 +2,16 @@ package utils
 
 import (
 	"crypto/md5"
+	b64 "encoding/base64"
 	"encoding/hex"
 	"fmt"
+	"github.com/RaymondCode/simple-demo/global"
+	//"github.com/RaymondCode/simple-demo/initialize"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"mime/multipart"
 	"strconv"
 	"time"
 )
-
-const (
-	endpoint        = "oss-cn-shanghai.aliyuncs.com"
-	accessKeyId     = "LTAI5tKKikXFabpj9zGQ5DNL"
-	accessKeySecret = "LQkyJg59cMhzABZenl607xqe2AXH4Y"
-	bucketName      = "mini-douyin-videos"
-	host            = "https://mini-douyin-videos.oss-cn-shanghai.aliyuncs.com"
-)
-
-var ossCli *oss.Client
-
-// OSSClient create oss client object
-func OSSClient() *oss.Client {
-	if ossCli != nil {
-		return ossCli
-	}
-	ossCli, err := oss.New(endpoint, accessKeyId, accessKeySecret)
-	if err != nil {
-		return nil
-	}
-	return ossCli
-}
 
 func MD5V(str []byte) string {
 	h := md5.New()
@@ -38,12 +19,37 @@ func MD5V(str []byte) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
+func EncodeStr(str string) string {
+	return b64.StdEncoding.EncodeToString([]byte(str))
+}
+
+func DecodeStr(sEnc string) string {
+	sDec, _ := b64.StdEncoding.DecodeString(sEnc)
+	return string(sDec)
+}
+
+func GetOssClient() {
+	ossCfg := global.CONFIG.Oss
+
+	client, err := oss.New(DecodeStr(ossCfg.Endpoint), DecodeStr(ossCfg.AccessKeyId), DecodeStr(ossCfg.AccessKeySecret))
+
+	if err != nil {
+		panic(err)
+	} else {
+		global.OSS = client
+	}
+}
+
 // UploadVideoToOss UploadFileToOss upload file to oss
 func UploadVideoToOss(userId int64, file *multipart.FileHeader) (string, error) {
 
-	client := OSSClient()
+	if global.OSS == nil {
+		GetOssClient()
+	}
 
-	bucket, err := client.Bucket(bucketName)
+	client := global.OSS
+
+	bucket, err := client.Bucket(DecodeStr(global.CONFIG.Oss.BucketName))
 	if err != nil {
 		return "", nil
 	}
@@ -72,5 +78,5 @@ func UploadVideoToOss(userId int64, file *multipart.FileHeader) (string, error) 
 		return "", err
 	}
 
-	return fmt.Sprintf("%s/%s", host, objectName), nil
+	return fmt.Sprintf("%s/%s", DecodeStr(global.CONFIG.Oss.Host), objectName), nil
 }
