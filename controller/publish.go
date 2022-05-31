@@ -1,12 +1,10 @@
 package controller
 
 import (
-	"fmt"
 	"github.com/RaymondCode/simple-demo/model/response"
 	"github.com/RaymondCode/simple-demo/service"
 	"github.com/RaymondCode/simple-demo/utils"
 	"github.com/gin-gonic/gin"
-	"path/filepath"
 )
 
 type VideoListResponse struct {
@@ -22,15 +20,6 @@ func Publish(c *gin.Context) {
 	videoData, err := c.FormFile("data")
 	if err != nil {
 		response.FailWithMessage("文件接收失败", c)
-		return
-	}
-
-	// todo: oss存储
-	filename := filepath.Base(videoData.Filename)
-	finalName := fmt.Sprintf("%d_%s", userId, filename)
-	saveFile := filepath.Join("./public/", finalName)
-	if err := c.SaveUploadedFile(videoData, saveFile); err != nil {
-		response.FailWithMessage("视频上传失败", c)
 		return
 	}
 
