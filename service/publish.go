@@ -25,15 +25,15 @@ func (ps *PublishService) VideoPublishList(userId int64) ([]model.Video, error) 
 }
 
 func (ps *PublishService) VideoPublish(userId int64, title string, videoData *multipart.FileHeader) error {
-	oss_path, err := utils.UploadVideoToOss(userId, videoData)
+	video_path, cover_url, err := utils.UploadVideoToOss(userId, videoData)
 	if err != nil {
 		return errors.New("文件上传云端失败")
 	}
 
 	video := model.Video{
 		UserId:     userId,
-		PlayUrl:    oss_path,
-		CoverUrl:   "https://cdn.pixabay.com/photo/2016/03/27/18/10/bear-1283347_1280.jpg",
+		PlayUrl:    video_path,
+		CoverUrl:   cover_url,
 		Title:      title,
 		CreateTime: time.Now(),
 	}
