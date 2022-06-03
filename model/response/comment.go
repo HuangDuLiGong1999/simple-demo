@@ -13,7 +13,7 @@ type CommentListResponse struct {
 
 type CommentResponse struct {
 	Response
-	Comment map[int]model.Comment `json:"comment"`
+	Comment model.Comment `json:"comment"`
 }
 
 func OkWithCommentListInfo(commentList []model.Comment, msg string, c *gin.Context) {
@@ -27,15 +27,11 @@ func OkWithCommentListInfo(commentList []model.Comment, msg string, c *gin.Conte
 }
 
 func OkWithCommentInfo(comment model.Comment, msg string, c *gin.Context) {
-	var m2 map[int]model.Comment = map[int]model.Comment{
-		0: comment,
-		1: {},
-	}
 	c.JSON(http.StatusOK, CommentResponse{
 		Response: Response{
 			StatusCode: SUCCESS,
 			StatusMsg:  msg,
 		},
-		Comment: m2,
+		Comment: comment,
 	})
 }
