@@ -4,6 +4,7 @@ type Group struct {
 	VideoRepository
 	UserRepository
 	CommentRepository
+	RelationRepository
 	// VideoRepository
 	// ...
 }
