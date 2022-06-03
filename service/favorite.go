@@ -66,8 +66,8 @@ func (fs *FavoriteService) FavoriteList(userId int64) ([]model.Video, error) {
 		videoIds[i], _ = strconv.ParseInt(v, 10, 64)
 	}
 	videoList, err := repository.GroupApp.VideoRepository.QueryByIds(videoIds)
-	for _, v := range videoList {
-		v.IsFavorite = true
+	for i, _ := range videoList {
+		videoList[i].IsFavorite = true
 	}
 	return videoList, err
 }
