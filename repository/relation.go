@@ -24,7 +24,11 @@ func (rr *RelationRepository) DeleteUserId(userId, toUserId int64) error {
 func (rr *RelationRepository) GetFollowListByUserId(userId int64) ([]*model.User, error) {
 	var userList []*model.User
 	if err := global.DB.Where("id in (?)",
+<<<<<<< HEAD
 		global.DB.Table("user_follower").Select("to_user_id").Where("user_id = ?", userId)).Find(&userList).Error; err != nil {
+=======
+		global.DB.Table("user_follower").Select("to_user_id").Where("userId = ?", userId)).Find(&userList).Error; err != nil {
+>>>>>>> zzz
 		return nil, err
 	}
 	return userList, nil

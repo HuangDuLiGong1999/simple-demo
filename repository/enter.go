@@ -3,7 +3,10 @@ package repository
 type Group struct {
 	VideoRepository
 	UserRepository
+<<<<<<< HEAD
 	CommentRepository
+=======
+>>>>>>> zzz
 	RelationRepository
 	// VideoRepository
 	// ...
