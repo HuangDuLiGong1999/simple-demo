@@ -26,7 +26,8 @@ func RelationAction(c *gin.Context) {
 
 //获取关注列表
 func FollowList(c *gin.Context) {
-	userList, err := service.GroupApp.RelationService.FollowList(utils.GetUserId(c))
+	user_id, err := strconv.ParseInt(c.Query("user_id"), 10, 64)
+	userList, err := service.GroupApp.RelationService.FollowList(user_id)
 	if err != nil {
 		response.FailWithMessage("FollowList failed", c)
 		return
@@ -36,7 +37,8 @@ func FollowList(c *gin.Context) {
 
 //获取粉丝列表
 func FollowerList(c *gin.Context) {
-	userList, err := service.GroupApp.RelationService.FollowerList(utils.GetUserId(c))
+	user_id, err := strconv.ParseInt(c.Query("user_id"), 10, 64)
+	userList, err := service.GroupApp.RelationService.FollowerList(user_id)
 	if err != nil {
 		response.FailWithMessage("FollowerList failed", c)
 		return

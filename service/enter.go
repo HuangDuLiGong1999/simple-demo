@@ -6,11 +6,7 @@ type Group struct {
 	UserService
 	RelationService
 	PublishService
-<<<<<<< HEAD
 	CommentService
-=======
-	RelationService
->>>>>>> zzz
 	//VideoService
 	// ...
 }

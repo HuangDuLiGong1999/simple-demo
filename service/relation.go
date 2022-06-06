@@ -52,11 +52,7 @@ func (rs *RelationService) RelationAction(userId, toUserId int64, actionType str
 }
 
 //查找关注列表
-<<<<<<< HEAD
 func (rs *RelationService) FollowList(userId int64) ([]*model.User, error) {
-=======
-func (rr *RelationService) FollowList(userId int64) ([]*model.User, error) {
->>>>>>> zzz
 	userList, err := repository.GroupApp.RelationRepository.GetFollowListByUserId(userId)
 	if err != nil {
 		return nil, err
@@ -69,11 +65,7 @@ func (rr *RelationService) FollowList(userId int64) ([]*model.User, error) {
 }
 
 //查找粉丝列表
-<<<<<<< HEAD
 func (rs *RelationService) FollowerList(userId int64) ([]*model.User, error) {
-=======
-func (rr *RelationService) FollowerList(userId int64) ([]*model.User, error) {
->>>>>>> zzz
 	userList, err := repository.GroupApp.RelationRepository.GetFollowerListByToUserId(userId)
 	if err != nil {
 		return nil, err
