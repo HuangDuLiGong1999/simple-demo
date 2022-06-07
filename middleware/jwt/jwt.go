@@ -20,6 +20,11 @@ func JWT() gin.HandlerFunc {
 			c.Next()
 			return
 		}
+		// 登录时不需要token
+		if i := strings.Index(uri, "feed"); i != -1 {
+			c.Next()
+			return
+		}
 		token := ""
 		// 投稿发布时, token用PostForm取, 其他的用Query取
 		if i := strings.Index(uri, "publish/action"); i != -1 {
