@@ -11,7 +11,7 @@
  Target Server Version : 80019
  File Encoding         : 65001
 
- Date: 07/06/2022 10:23:20
+ Date: 07/06/2022 10:59:09
 */
 
 SET NAMES utf8mb4;
@@ -31,6 +31,11 @@ CREATE TABLE `comment_info`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of comment_info
+-- ----------------------------
+INSERT INTO `comment_info` VALUES (14, '8', '3', '你好', '06-07');
+
+-- ----------------------------
 -- Table structure for user_follower
 -- ----------------------------
 DROP TABLE IF EXISTS `user_follower`;
@@ -44,17 +49,8 @@ CREATE TABLE `user_follower`  (
 -- ----------------------------
 -- Records of user_follower
 -- ----------------------------
-INSERT INTO `user_follower` VALUES (1, '1', '2');
-INSERT INTO `user_follower` VALUES (2, '1', '3');
-INSERT INTO `user_follower` VALUES (3, '1', '4');
-INSERT INTO `user_follower` VALUES (4, '2', '5');
-INSERT INTO `user_follower` VALUES (5, '2', '1');
-INSERT INTO `user_follower` VALUES (6, '3', '1');
-INSERT INTO `user_follower` VALUES (7, '3', '3');
-INSERT INTO `user_follower` VALUES (8, '5', '3');
-INSERT INTO `user_follower` VALUES (9, '6', '5');
-INSERT INTO `user_follower` VALUES (10, '8', '3');
-INSERT INTO `user_follower` VALUES (11, '8', '1');
+INSERT INTO `user_follower` VALUES (20, '9', '3');
+INSERT INTO `user_follower` VALUES (21, '9', '2');
 
 -- ----------------------------
 -- Table structure for user_info
@@ -72,13 +68,14 @@ CREATE TABLE `user_info`  (
 -- ----------------------------
 -- Records of user_info
 -- ----------------------------
-INSERT INTO `user_info` VALUES (1, 'zhangsan', '123456', 0, 1);
-INSERT INTO `user_info` VALUES (2, 'lisi', '123456', 0, 0);
+INSERT INTO `user_info` VALUES (1, 'zhangsan', '123456', 0, 0);
+INSERT INTO `user_info` VALUES (2, 'lisi', '123456', 0, 1);
 INSERT INTO `user_info` VALUES (3, 'wangwu', '123456', 0, 1);
 INSERT INTO `user_info` VALUES (4, 'xingyunye', '123456', 0, 0);
 INSERT INTO `user_info` VALUES (5, 'yunlinyou', '123456', 0, 0);
 INSERT INTO `user_info` VALUES (6, 'zhangliu', '123456', 0, 0);
-INSERT INTO `user_info` VALUES (8, 'xiaoming', 'xiaoming', 2, 0);
+INSERT INTO `user_info` VALUES (8, 'xiaoming', '123456', 0, 0);
+INSERT INTO `user_info` VALUES (9, 'xiaohong', '123456', 2, 0);
 
 -- ----------------------------
 -- Table structure for video_favorite
@@ -112,6 +109,6 @@ CREATE TABLE `video_info`  (
 -- ----------------------------
 INSERT INTO `video_info` VALUES (1, '2', 'https://www.w3schools.com/html/movie.mp4', 'https://cdn.pixabay.com/photo/2016/03/27/18/10/bear-1283347_1280.jpg', 1, 0, '测试1', '2022-05-28 09:43:37');
 INSERT INTO `video_info` VALUES (2, '1', 'https://www.w3schools.com/html/mov_bbb.mp4', 'https://www.topgoer.cn/uploads/blog/202111/attach_16b79b08788038a8.jpg', 4, 0, '测试2', '2022-06-07 10:12:19');
-INSERT INTO `video_info` VALUES (3, '3', 'http://rclc6mkkn.hn-bkt.clouddn.com/mikasa.mp4', 'http://rclc6mkkn.hn-bkt.clouddn.com/%E5%B0%8F%E4%B8%89%E7%AC%A0.jpg', 3, 0, '测试3', '2022-06-07 10:12:03');
+INSERT INTO `video_info` VALUES (3, '3', 'http://rclc6mkkn.hn-bkt.clouddn.com/mikasa.mp4', 'http://rclc6mkkn.hn-bkt.clouddn.com/%E5%B0%8F%E4%B8%89%E7%AC%A0.jpg', 4, 1, '测试3', '2022-06-07 10:36:58');
 
 SET FOREIGN_KEY_CHECKS = 1;
