@@ -3,6 +3,7 @@ package repository
 import (
 	"github.com/RaymondCode/simple-demo/global"
 	"github.com/RaymondCode/simple-demo/model"
+	"gorm.io/gorm"
 )
 
 type VideoRepository struct{}
@@ -55,4 +56,14 @@ func (vr *VideoRepository) InsertVideo(video model.Video) error {
 	}
 	return nil
 
+}
+
+// InCreCommentCount 增加评论数量
+func (vr *VideoRepository) InCreCommentCount(videoId int64, count int) error {
+	return global.DB.Model(&model.Video{}).Where("id = ?", videoId).Update("comment_count", gorm.Expr("comment_count + ?", count)).Error
+}
+
+// DeCreCommentCount 减少评论数量
+func (vr *VideoRepository) DeCreCommentCount(videoId int64, count int) error {
+	return global.DB.Model(&model.Video{}).Where("id = ?", videoId).Update("comment_count", gorm.Expr("comment_count - ?", count)).Error
 }

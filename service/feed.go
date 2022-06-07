@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/RaymondCode/simple-demo/utils"
 	"time"
 
 	"github.com/RaymondCode/simple-demo/model"
@@ -9,7 +10,7 @@ import (
 
 type FeedService struct{}
 
-func (fes *FeedService) QueryFeed(latestTime int64, token string) ([]model.Video, error) {
+func (fes *FeedService) QueryFeed(latestTime, userId int64) ([]model.Video, error) {
 	var rawVideos []model.Video
 	var err error
 	if latestTime > 0 {
@@ -23,30 +24,8 @@ func (fes *FeedService) QueryFeed(latestTime int64, token string) ([]model.Video
 	if err != nil {
 		return nil, err
 	}
+	for i, _ := range rawVideos {
+		rawVideos[i].IsFavorite = utils.IsFavorite(userId, rawVideos[i].Id)
+	}
 	return rawVideos, nil
-	// var videos []Video
-	// for _, video := range rawVideos {
-	// 	userId := video.UserId
-	// 	rawAuthor, err := repository.GroupApp.UserRepository.QueryUserById(userId)
-	// 	if err != nil {
-	// 		return nil, err
-	// 	}
-	// 	author := User{
-	// 		Id:            rawAuthor.Id,
-	// 		Name:          rawAuthor.Username,
-	// 		FollowCount:   rawAuthor.FollowCount,
-	// 		FollowerCount: rawAuthor.FollowerCount,
-	// 		IsFollow:      false,
-	// 	}
-	// 	videos = append(videos, Video{
-	// 		Id:            video.Id,
-	// 		Author:        author,
-	// 		PlayUrl:       video.PlayUrl,
-	// 		CoverUrl:      video.CoverUrl,
-	// 		FavoriteCount: video.FavoriteCount,
-	// 		CommentCount:  video.CommentCount,
-	// 		IsFavorite:    false,
-	// 	})
-	// }
-	// return videos, nil
 }

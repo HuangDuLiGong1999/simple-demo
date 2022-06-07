@@ -2,8 +2,10 @@ package service
 
 import (
 	"errors"
+	"github.com/RaymondCode/simple-demo/global"
 	"github.com/RaymondCode/simple-demo/model"
 	"github.com/RaymondCode/simple-demo/repository"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -12,9 +14,7 @@ type CommentService struct{}
 func (cs *CommentService) QueryComment(videoId int64, token string) ([]model.Comment, error) {
 	var rawComments []model.Comment
 	var err error
-
 	rawComments, err = repository.GroupApp.CommentRepository.QueryCommentsByVideoId(videoId)
-
 	if err != nil {
 		return nil, err
 	}
@@ -37,11 +37,37 @@ func (cs *CommentService) InsertComment(videoId, userId int64, commentText strin
 		Content:    commentText,
 		CreateDate: datetime,
 	}
-	_comment, err := repository.GroupApp.CommentRepository.InsertComment(&comment)
-	if err != nil {
+	err2 := global.DB.Transaction(func(tx *gorm.DB) error {
+		// 新增评论
+		err := repository.GroupApp.CommentRepository.InsertComment(&comment)
+		if err != nil {
+			return err
+		}
+		// 更新评论数量
+		err = repository.GroupApp.VideoRepository.InCreCommentCount(videoId, 1)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	if err2 != nil {
 		return nil, errors.New("评论存储数据库失败")
 	} else {
-		return _comment, nil
+		return &comment, nil
 	}
+}
 
+func (cs *CommentService) Delete(commentId, videoId int64) error {
+	err := global.DB.Transaction(func(tx *gorm.DB) error {
+		// 删除评论
+		if err := repository.GroupApp.CommentRepository.Delete(commentId); err != nil {
+			return err
+		}
+		// 更新 video 表的 comment_count
+		if err := repository.GroupApp.VideoRepository.DeCreCommentCount(videoId, 1); err != nil {
+			return err
+		}
+		return nil
+	})
+	return err
 }
