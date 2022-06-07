@@ -68,5 +68,3 @@ func (rr *RelationRepository) IncreaseFollowerCount(userId int64, count int) err
 func (rr *RelationRepository) DecreaseFollowerCount(userId int64, count int) error {
 	return global.DB.Model(&model.User{}).Where("id = ?", userId).Update("follower_count", gorm.Expr("follower_count - ?", count)).Error
 }
-
-//

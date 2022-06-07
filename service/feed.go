@@ -26,6 +26,12 @@ func (fes *FeedService) QueryFeed(latestTime, userId int64) ([]model.Video, erro
 	}
 	for i, _ := range rawVideos {
 		rawVideos[i].IsFavorite = utils.IsFavorite(userId, rawVideos[i].Id)
+		f, err := repository.GroupApp.RelationRepository.GetFollowerByUserIdAndToUserId(userId, rawVideos[i].UserId)
+		if f == nil || err != nil {
+			rawVideos[i].Author.IsFollow = false
+		} else {
+			rawVideos[i].Author.IsFollow = true
+		}
 	}
 	return rawVideos, nil
 }

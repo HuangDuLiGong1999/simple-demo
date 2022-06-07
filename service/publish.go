@@ -20,7 +20,15 @@ func (ps *PublishService) VideoPublishList(userId int64) ([]model.Video, error) 
 	sort.Slice(videoList, func(i, j int) bool {
 		return videoList[i].CreateTime.After(videoList[j].CreateTime)
 	})
-
+	for i, _ := range videoList {
+		videoList[i].IsFavorite = true
+		f, err := repository.GroupApp.RelationRepository.GetFollowerByUserIdAndToUserId(userId, videoList[i].UserId)
+		if f == nil || err != nil {
+			videoList[i].Author.IsFollow = false
+		} else {
+			videoList[i].Author.IsFollow = true
+		}
+	}
 	return videoList, err
 }
 

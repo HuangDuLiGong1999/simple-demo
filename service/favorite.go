@@ -71,6 +71,12 @@ func (fs *FavoriteService) FavoriteList(userId int64) ([]model.Video, error) {
 	videoList, err := repository.GroupApp.VideoRepository.QueryByIds(videoIds)
 	for i, _ := range videoList {
 		videoList[i].IsFavorite = true
+		f, err := repository.GroupApp.RelationRepository.GetFollowerByUserIdAndToUserId(userId, videoList[i].UserId)
+		if f == nil || err != nil {
+			videoList[i].Author.IsFollow = false
+		} else {
+			videoList[i].Author.IsFollow = true
+		}
 	}
 	return videoList, err
 }
