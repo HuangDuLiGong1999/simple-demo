@@ -7,7 +7,6 @@ type Group struct {
 	RelationService
 	PublishService
 	CommentService
-	//VideoService
 	// ...
 }
 

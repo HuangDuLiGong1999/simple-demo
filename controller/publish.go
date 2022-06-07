@@ -7,11 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type VideoListResponse struct {
-	Response
-	VideoList []Video `json:"video_list"`
-}
-
 // Publish check token then save upload file to public directory or OSS
 func Publish(c *gin.Context) {
 	userId := utils.GetUserId(c)
@@ -22,12 +17,10 @@ func Publish(c *gin.Context) {
 		response.FailWithMessage("文件接收失败", c)
 		return
 	}
-
 	if err := service.GroupApp.PublishService.VideoPublish(userId, title, videoData); err != nil {
 		response.FailWithMessage("视频信息存储失败", c)
 		return
 	}
-
 	response.OkWithMessage("视频上传成功", c)
 
 }

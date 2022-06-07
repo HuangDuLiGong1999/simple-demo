@@ -5,7 +5,6 @@ type Group struct {
 	UserRepository
 	CommentRepository
 	RelationRepository
-	// VideoRepository
 	// ...
 }
 

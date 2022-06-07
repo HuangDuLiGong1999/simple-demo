@@ -23,7 +23,7 @@ func Register(c *gin.Context) {
 	// 检查用户名存在的情况
 	count := service.GroupApp.UserService.IfNameExist(username)
 	if count > 0 {
-		c.JSON(http.StatusOK, Response{StatusCode: 1, StatusMsg: "用户名已存在"})
+		c.JSON(http.StatusOK, response.Response{StatusCode: 1, StatusMsg: "用户名已存在"})
 		return
 	}
 	// 存db，返回用户Id
@@ -32,7 +32,7 @@ func Register(c *gin.Context) {
 	// 如果无法生成token，打log记录问题并返回500
 	if err != nil {
 		log.Println(fmt.Sprintf("无法生成token, err: %s", err))
-		c.JSON(http.StatusInternalServerError, Response{StatusCode: 1, StatusMsg: "服务器异常，请联系管理员"})
+		c.JSON(http.StatusInternalServerError, response.Response{StatusCode: 1, StatusMsg: "服务器异常，请联系管理员"})
 		return
 	}
 	response.OkWithToken(userId, token, c)
