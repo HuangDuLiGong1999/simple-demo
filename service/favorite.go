@@ -61,6 +61,9 @@ func (fs *FavoriteService) FavoriteList(userId int64) ([]model.Video, error) {
 		return nil, err
 	}
 	length := len(videoIdStrList)
+	if length == 0 {
+		return nil, nil
+	}
 	videoIds := make([]int64, length)
 	for i, v := range videoIdStrList {
 		videoIds[i], _ = strconv.ParseInt(v, 10, 64)
