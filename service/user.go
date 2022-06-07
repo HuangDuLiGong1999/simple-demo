@@ -8,7 +8,7 @@ import (
 
 type UserService struct{}
 
-func (us *UserService) QueryUser(userId int64, token string) (*model.User, error) {
+func (us *UserService) QueryUser(userId int64) (*model.User, error) {
 	rawUser, err := repository.GroupApp.UserRepository.QueryUserById(userId)
 	if err != nil {
 		return nil, err
@@ -32,7 +32,7 @@ func (us *UserService) IfNameExist(name string) int64 {
 }
 
 // SaveUser 把新创建的User存到数据库中
-func (us *UserService) SaveUser(username, password, nickname string) int64 {
-	user := model.User{Name: username, Password: password, Nickname: nickname}
+func (us *UserService) SaveUser(username, password string) int64 {
+	user := model.User{Name: username, Password: password}
 	return repository.GroupApp.UserRepository.SaveUser(&user)
 }

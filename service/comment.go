@@ -22,11 +22,11 @@ func (cs *CommentService) QueryComment(videoId int64, token string) ([]model.Com
 
 }
 
-func (cs *CommentService) InsertComment(videoId, userId int64, commentText string, token string) (*model.Comment, error) {
+func (cs *CommentService) InsertComment(videoId, userId int64, commentText string) (*model.Comment, error) {
 	timestamp := time.Now().Unix()
 	// 再格式化时间戳转化为日期
 	datetime := time.Unix(timestamp, 0).Format("01-02")
-	user, err := GroupApp.UserService.QueryUser(userId, token)
+	user, err := GroupApp.UserService.QueryUser(userId)
 	if err != nil {
 		return nil, errors.New("不存在该用户")
 	}

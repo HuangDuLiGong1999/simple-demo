@@ -16,9 +16,8 @@ type CommentActionResponse struct {
 
 //CommentAction 评论操作
 func CommentAction(c *gin.Context) {
-	user_id := utils.GetUserId(c)
-	token := c.Query("token")
-	video_id, err := strconv.ParseInt(c.Query("video_id"), 10, 64)
+	userId := utils.GetUserId(c)
+	videoId, err := strconv.ParseInt(c.Query("video_id"), 10, 64)
 	if err != nil {
 		response.FailWithMessage("video_id参数无效", c)
 		return
@@ -30,7 +29,7 @@ func CommentAction(c *gin.Context) {
 			c.JSON(http.StatusPreconditionFailed, Response{StatusCode: 1, StatusMsg: "参数为空"})
 			return
 		}
-		comment, err := service.GroupApp.CommentService.InsertComment(video_id, user_id, text, token)
+		comment, err := service.GroupApp.CommentService.InsertComment(videoId, userId, text)
 		if err != nil {
 			response.FailWithMessage("获取user过程发生错误", c)
 			return
